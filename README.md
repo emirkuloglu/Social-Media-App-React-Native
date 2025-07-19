@@ -1,4 +1,4 @@
-# Welcome to my new social media app 👋
+# Welcome to my social media app 👋
 
 
-## BETA
+## BETA 1.0
