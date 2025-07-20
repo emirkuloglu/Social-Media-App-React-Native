@@ -43,7 +43,8 @@
     "react-native-webview": "13.13.5",
     "svix": "^1.69.0",
     "expo-image-picker": "~16.1.4",
-    "expo-file-system": "~18.1.11"
+    "expo-file-system": "~18.1.11",
+    "expo-navigation-bar": "~4.2.7"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
