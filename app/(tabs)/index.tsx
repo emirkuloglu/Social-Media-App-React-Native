@@ -6,13 +6,17 @@ import { api } from "@/convex/_generated/api";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../styles/feed.styles";
 
+
 export default function Index() {
   const { signOut } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
+  const router = useRouter();
+
 
   const posts = useQuery(api.posts.getFeedPosts);
 
@@ -32,8 +36,8 @@ export default function Index() {
       {/* HEADER */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Weirdo</Text>
-        <TouchableOpacity onPress={() => signOut()}>
-          <Ionicons name="log-out-outline" size={24} color={COLORS.white} />
+        <TouchableOpacity onPress={() => router.push("/(tabs)/notifications")}>
+          <Ionicons name="notifications-outline" size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
 

@@ -27,9 +27,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="bookmarks"
+        name="search"
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="bookmark" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="search" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -41,9 +41,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="bookmarks"
+        options={{
+          tabBarIcon: ({ color, size }) => <Ionicons name="bookmark" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="notifications"
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="heart" size={size} color={color} />,
+          href: null,
         }}
       />
       <Tabs.Screen

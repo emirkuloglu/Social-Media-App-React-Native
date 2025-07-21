@@ -5,28 +5,49 @@ import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/notification.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
-import { FlatList, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Stack } from "expo-router/stack";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+
 
 export default function Notifications() {
+  const router = useRouter();
   const notifications = useQuery(api.notifications.getNotifications);
 
   if (notifications === undefined) return <Loader />;
   if (notifications.length === 0) return <NoNotificationsFound />;
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Notifications</Text>
-      </View>
+  router.push("/(tabs)");
 
-      <FlatList
-        data={notifications}
-        renderItem={({ item }) => <Notification notification={item} />}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContainer}
+  return (
+
+    <>
+      <Stack.Screen
+        options={{
+          title: "Notifications",
+          headerShown: true,
+          headerStyle: { backgroundColor: "black" },
+          headerTintColor: "white",
+        }}
       />
-    </View>
+
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Notifications</Text>
+        </View>
+
+        <FlatList
+          data={notifications}
+          renderItem={({ item }) => <Notification notification={item} />}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+        />
+      </View>
+    </>
   );
 }
 
