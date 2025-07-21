@@ -30,12 +30,13 @@ export default function Notifications() {
       />
 
       <View style={styles.container}>
-        <View style={styles.header}>
+        <View style={[styles.header, { flexDirection: "row", alignItems: "center" }]}>
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>New mbPost</Text>
-          <View style={{ width: 28 }} />
+          <View style={{ flex: 1, alignItems: "center", marginRight: 28 }}>
+            <Text style={{ fontSize: 20, fontFamily: "JetBrainsMono-Medium", color: COLORS.white }}>Notification</Text>
+          </View>
         </View>
 
         <FlatList
