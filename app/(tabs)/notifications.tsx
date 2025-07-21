@@ -17,15 +17,13 @@ export default function Notifications() {
   if (notifications === undefined) return <Loader />;
   if (notifications.length === 0) return <NoNotificationsFound />;
 
-  router.push("/(tabs)");
-
   return (
 
     <>
       <Stack.Screen
         options={{
           title: "Notifications",
-          headerShown: true,
+          headerShown: false,
           headerStyle: { backgroundColor: "black" },
           headerTintColor: "white",
         }}
@@ -34,9 +32,10 @@ export default function Notifications() {
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
+            <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Notifications</Text>
+          <Text style={styles.headerTitle}>New mbPost</Text>
+          <View style={{ width: 28 }} />
         </View>
 
         <FlatList
