@@ -16,7 +16,7 @@ const languageDetector = {
   async: true,
   detect: async (callback) => {
     const savedLanguage = await AsyncStorage.getItem("user-language");
-    const bestLang = Localization.locale;  // expo-localization kullanıyoruz
+    const bestLang = Localization.locale;
     callback(savedLanguage || bestLang || "en");
   },
   init: () => {},

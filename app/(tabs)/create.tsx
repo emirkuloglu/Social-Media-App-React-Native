@@ -1,9 +1,15 @@
 import { COLORS } from "@/constants/theme";
+import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/create.styles";
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
+import { useMutation } from "convex/react";
+import * as FileSystem from "expo-file-system";
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -15,15 +21,9 @@ import {
   View,
 } from "react-native";
 
-import { Image } from "expo-image";
-
-import * as FileSystem from "expo-file-system";
-import * as ImagePicker from "expo-image-picker";
-
-import { api } from "@/convex/_generated/api";
-import { useMutation } from "convex/react";
 
 export default function CreateScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { user } = useUser();
 
@@ -81,13 +81,13 @@ export default function CreateScreen() {
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>New Post</Text>
+          <Text style={styles.headerTitle}>{t("create.newpost")}</Text>
           <View style={{ width: 28 }} />
         </View>
 
         <TouchableOpacity style={styles.emptyImageContainer} onPress={pickImage}>
           <Ionicons name="image-outline" size={48} color={COLORS.grey} />
-          <Text style={styles.emptyImageText}>Tap to select an image</Text>
+          <Text style={styles.emptyImageText}>{t("create.selectimage")}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -115,7 +115,7 @@ export default function CreateScreen() {
               color={isSharing ? COLORS.grey : COLORS.white}
             />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>New Post</Text>
+          <Text style={styles.headerTitle}>{t("create.newpost")}</Text>
           <TouchableOpacity
             style={[styles.shareButton, isSharing && styles.shareButtonDisabled]}
             disabled={isSharing || !selectedImage}
@@ -124,7 +124,7 @@ export default function CreateScreen() {
             {isSharing ? (
               <ActivityIndicator size="small" color={COLORS.primary} />
             ) : (
-              <Text style={styles.shareText}>Share</Text>
+              <Text style={styles.shareText}>{t("create.share")}</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -150,7 +150,7 @@ export default function CreateScreen() {
                 disabled={isSharing}
               >
                 <Ionicons name="image-outline" size={20} color={COLORS.white} />
-                <Text style={styles.changeImageText}>Change</Text>
+                <Text style={styles.changeImageText}>{t("create.change")}</Text>
               </TouchableOpacity>
             </View>
 

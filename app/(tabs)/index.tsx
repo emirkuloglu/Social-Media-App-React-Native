@@ -8,11 +8,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "../../styles/feed.styles";
 
 
 export default function Index() {
+  const { t } = useTranslation();
   const { signOut } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
@@ -35,7 +37,7 @@ export default function Index() {
     <View style={styles.container}>
       {/* HEADER */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Weirdo</Text>
+        <Text style={styles.headerTitle}>{t("index.weirdo")}</Text>
         <TouchableOpacity onPress={() => router.push("/(tabs)/notifications")}>
           <Ionicons name="notifications-outline" size={24} color={COLORS.white} />
         </TouchableOpacity>
@@ -60,15 +62,19 @@ export default function Index() {
   );
 }
 
-const NoPostsFound = () => (
-  <View
+
+function NoPostsFound() {
+  const { t } = useTranslation();
+  return(
+    <View
     style={{
       flex: 1,
       backgroundColor: COLORS.background,
       justifyContent: "center",
       alignItems: "center",
     }}
-  >
-    <Text style={{ fontSize: 20, color: COLORS.primary }}>No posts yet</Text>
+    >
+    <Text style={{ fontSize: 20, color: COLORS.primary }}>{t("index.nopost")}</Text>
   </View>
-);
+  );
+}

@@ -8,21 +8,23 @@ import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-    FlatList,
-    Keyboard,
-    KeyboardAvoidingView,
-    Modal,
-    Platform,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    View,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 
 export default function Profile() {
+  const { t } = useTranslation();
   const { signOut, userId } = useAuth();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
@@ -74,15 +76,15 @@ export default function Profile() {
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.posts}</Text>
-                <Text style={styles.statLabel}>Posts</Text>
+                <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.followers}</Text>
-                <Text style={styles.statLabel}>Followers</Text>
+                <Text style={styles.statLabel}>{t("profile.followers")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.following}</Text>
-                <Text style={styles.statLabel}>Following</Text>
+                <Text style={styles.statLabel}>{t("profile.following")}</Text>
               </View>
             </View>
           </View>
@@ -92,7 +94,7 @@ export default function Profile() {
 
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.editButton} onPress={() => setIsEditModalVisible(true)}>
-              <Text style={styles.editButtonText}>Edit Profile</Text>
+              <Text style={styles.editButtonText}>{t("profile.editprofile")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareButton}>
               <Ionicons name="share-outline" size={20} color={COLORS.white} />
@@ -133,14 +135,14 @@ export default function Profile() {
           >
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Edit Profile</Text>
+                <Text style={styles.modalTitle}>{t("profile.editprofile")}</Text>
                 <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
                   <Ionicons name="close" size={24} color={COLORS.white} />
                 </TouchableOpacity>
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Name</Text>
+                <Text style={styles.inputLabel}>{t("profile.name")}</Text>
                 <TextInput
                   style={styles.input}
                   value={editedProfile.fullname}
@@ -150,7 +152,7 @@ export default function Profile() {
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Bio</Text>
+                <Text style={styles.inputLabel}>{t("profile.bio")}</Text>
                 <TextInput
                   style={[styles.input, styles.bioInput]}
                   value={editedProfile.bio}
@@ -162,7 +164,7 @@ export default function Profile() {
               </View>
 
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
-                <Text style={styles.saveButtonText}>Save Changes</Text>
+                <Text style={styles.saveButtonText}>{t("profile.savechanges")}</Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
@@ -199,6 +201,7 @@ export default function Profile() {
 }
 
 function NoPostsFound() {
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -209,7 +212,7 @@ function NoPostsFound() {
       }}
     >
       <Ionicons name="images-outline" size={48} color={COLORS.primary} />
-      <Text style={{ fontSize: 20, color: COLORS.white }}>No posts yet</Text>
+      <Text style={{ fontSize: 20, color: COLORS.white }}>{t("profile.nopost")}</Text>
     </View>
   );
 }

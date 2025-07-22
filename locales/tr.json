@@ -4,5 +4,43 @@
     "tagline": "garip bir şey paylaş",
     "continueWithGoogle": "Google ile devam et",
     "termsAndPrivacy": "Devam ederek Şartlar ve Gizlilik Politikamızı kabul etmiş olursunuz."
+  },
+
+  "bookmarks": {
+    "bookmarks": "Kaydedilenler",
+    "nobookmarks": "Henüz kaydedilen bir gönderi yok"
+  },
+
+  "create": {
+    "newpost": "Yeni Gönderi",
+    "selectimage": "Bir resim seçmek için dokun",
+    "share": "Paylaş",
+    "change": "Değiştir"
+  },
+
+  "index": {
+    "weirdo": "Weirdo",
+    "nopost": "Henüz gönderi yok"
+  },
+
+  "notifications": {
+    "notification": "Bildirimler",
+    "nonotification": "Henüz bildirim yok"
+  },
+
+  "profile": {
+    "posts": "Gönderi",
+    "followers": "Takipçi",
+    "following": "Takip",
+    "editprofile": "Profili Düzenle",
+    "name": "İsim",
+    "bio": "Biyografi",
+    "savechanges": "Değişiklikleri Kaydet",
+    "nopost": "Henüz gönderi yok"
+  },
+
+  "search": {
+    "search": "Arama",
+    "nosearch": "Henüz arama yok"
   }
 }

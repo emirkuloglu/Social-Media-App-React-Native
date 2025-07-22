@@ -4,9 +4,11 @@ import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/feed.styles";
 import { useQuery } from "convex/react";
 import { Image } from "expo-image";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 
 export default function Bookmarks() {
+  const { t } = useTranslation();
   const bookmarkedPosts = useQuery(api.bookmarks.getBookmarkedPosts);
 
   if (bookmarkedPosts === undefined) return <Loader />;
@@ -15,7 +17,7 @@ export default function Bookmarks() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Bookmarks</Text>
+        <Text style={styles.headerTitle}>{t("bookmarks.bookmarks")}</Text>
       </View>
 
       {/* POSTS */}
@@ -46,6 +48,7 @@ export default function Bookmarks() {
 }
 
 function NoBookmarksFound() {
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -55,7 +58,7 @@ function NoBookmarksFound() {
         backgroundColor: COLORS.background,
       }}
     >
-      <Text style={{ color: COLORS.primary, fontSize: 22 }}>No bookmarked posts yet</Text>
+      <Text style={{ color: COLORS.primary, fontSize: 22 }}>{t("bookmarks.nobookmarks")}</Text>
     </View>
   );
 }

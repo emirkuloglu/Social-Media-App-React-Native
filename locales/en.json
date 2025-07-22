@@ -4,5 +4,43 @@
     "tagline": "post something weird",
     "continueWithGoogle": "Continue with Google",
     "termsAndPrivacy": "By continuing, you agree to our Terms and Privacy Policy"
+  },
+
+  "bookmarks": {
+    "bookmarks": "Bookmarks",
+    "nobookmarks": "No bookmarked posts yet"
+  },
+
+  "create": {
+    "newpost": "New Post",
+    "selectimage": "Tap to select an image",
+    "share": "Share",
+    "change": "Change"
+  },
+
+  "index": {
+    "weirdo": "Weirdo",
+    "nopost": "No post yet"
+  },
+
+  "notifications": {
+    "notification": "Notifications",
+    "nonotification": "No notification yet"
+  },
+
+  "profile": {
+    "posts": "Posts",
+    "followers": "Followers",
+    "following": "Following",
+    "editprofile": "Edit Profile",
+    "name": "Name",
+    "bio": "Bio",
+    "savechanges": "Save Changes",
+    "nopost": "No post yet"
+  },
+
+  "search": {
+    "search": "Search",
+    "nosearch": "No search yet"
   }
 }
