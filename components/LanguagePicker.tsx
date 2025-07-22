@@ -8,8 +8,8 @@ export default function LanguagePicker() {
   const [visible, setVisible] = useState(false);
 
   const languages = [
-    { code: "tr", label: "Türkçe" },
-    { code: "en", label: "English" },
+    { code: "tr", label: "Türkçe", flag: "🇹🇷" },
+    { code: "en", label: "English", flag: "🇬🇧" },
   ];
 
   const changeLanguage = (code: string) => {
@@ -35,13 +35,13 @@ export default function LanguagePicker() {
         <Pressable style={styles.overlay} onPress={() => setVisible(false)} />
 
         <View style={styles.menu}>
-          {languages.map(({ code, label }) => (
+          {languages.map(({ code, label, flag }) => (
             <TouchableOpacity
               key={code}
               onPress={() => changeLanguage(code)}
               style={styles.menuItem}
             >
-              <Text style={styles.menuText}>{label}</Text>
+              <Text style={styles.menuText}>{flag} {label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -53,35 +53,31 @@ export default function LanguagePicker() {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 40,
-    right: 20,
+    top: 30,
+    right: 5,
     zIndex: 1000,
   },
   button: {
-    backgroundColor: "rgba(0,0,0,0.4)",
-    padding: 10,
+    backgroundColor: "black",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 20,
   },
   iconRow: {
     flexDirection: "row",
     alignItems: "flex-start",
   },
-  buttonText: {
-    color: COLORS.primary,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
   overlay: {
     flex: 1,
   },
   menu: {
     position: "absolute",
-    top: 60,
+    top: 65,
     right: 0,
     backgroundColor: "#222",
     borderRadius: 8,
     paddingVertical: 8,
-    width: 120,
+    width: 110,
   },
   menuItem: {
     paddingVertical: 10,
