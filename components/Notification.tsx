@@ -4,9 +4,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { formatDistanceToNow } from "date-fns";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 
+
 export default function Notification({ notification }: any) {
+  const { t } = useTranslation();
   return (
     <View style={styles.notificationItem}>
       <View style={styles.notificationContent}>
@@ -39,10 +42,10 @@ export default function Notification({ notification }: any) {
 
           <Text style={styles.action}>
             {notification.type === "follow"
-              ? "started following you"
+              ? t("Notification.startedfollowingyou")
               : notification.type === "like"
-              ? "liked your post"
-              : `commented: "${notification.comment}"`}
+              ? t("Notification.likedyourpost")
+              : t("Notification.commented") + `"${notification.comment}"`}
           </Text>
           <Text style={styles.timeAgo}>
             {formatDistanceToNow(notification._creationTime, { addSuffix: true })}

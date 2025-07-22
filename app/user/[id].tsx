@@ -7,9 +7,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
+
 export default function UserProfileScreen() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams();
   const router = useRouter();
 
@@ -51,15 +54,15 @@ export default function UserProfileScreen() {
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.posts}</Text>
-                <Text style={styles.statLabel}>Posts</Text>
+                <Text style={styles.statLabel}>{t("[id].posts")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.followers}</Text>
-                <Text style={styles.statLabel}>Followers</Text>
+                <Text style={styles.statLabel}>{t("[id].followers")}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.following}</Text>
-                <Text style={styles.statLabel}>Following</Text>
+                <Text style={styles.statLabel}>{t("[id].following")}</Text>
               </View>
             </View>
           </View>
@@ -81,7 +84,7 @@ export default function UserProfileScreen() {
           {posts.length === 0 ? (
             <View style={styles.noPostsContainer}>
               <Ionicons name="images-outline" size={48} color={COLORS.grey} />
-              <Text style={styles.noPostsText}>No posts yet</Text>
+              <Text style={styles.noPostsText}>{t("[id].noposts")}</Text>
             </View>
           ) : (
             <FlatList

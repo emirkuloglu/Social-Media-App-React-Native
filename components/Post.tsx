@@ -9,8 +9,10 @@ import { formatDistanceToNow } from "date-fns";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import CommentsModal from "./CommentsModal";
+
 
 type PostProps = {
   post: {
@@ -31,6 +33,7 @@ type PostProps = {
 };
 
 export default function Post({ post }: PostProps) {
+  const { t } = useTranslation();
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
 
@@ -135,7 +138,7 @@ export default function Post({ post }: PostProps) {
       {/* POST INFO */}
       <View style={styles.postInfo}>
         <Text style={styles.likesText}>
-          {post.likes > 0 ? `${post.likes.toLocaleString()} likes` : "Be the first to like"}
+          {post.likes > 0 ? `${post.likes.toLocaleString()}` + t("Post.likes") : t("Post.bethefirsttolike")}
         </Text>
         {post.caption && (
           <View style={styles.captionContainer}>
@@ -146,7 +149,7 @@ export default function Post({ post }: PostProps) {
 
         {post.comments > 0 && (
           <TouchableOpacity onPress={() => setShowComments(true)}>
-            <Text style={styles.commentsText}>View all {post.comments} comments</Text>
+            <Text style={styles.commentsText}>{t("Post.viewall")} {post.comments} {t("Post.comments")}</Text>
           </TouchableOpacity>
         )}
 

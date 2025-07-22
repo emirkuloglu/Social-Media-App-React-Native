@@ -42,5 +42,31 @@
   "search": {
     "search": "Arama",
     "nosearch": "Henüz arama yok"
+  },
+
+  "[id]": {
+    "posts": "Gönderi",
+    "followers":"Takipçi",
+    "following":"Takip",
+    "nopost":"Henüz gönderi yok"
+  },
+
+  "CommentsModal": {
+    "comments": "Yorumlar",
+    "addacomment": "Bir yorum ekle...",
+    "share": "Paylaş"
+  },
+
+  "Post": {
+    "viewall": "Tüm",
+    "comments": "yorumu görüntüle",
+    "bethefirsttolike": "İlk beğenen ol",
+    "likes": " beğeni"
+  },
+
+  "Notification": {
+    "likedyourpost": "gönderini beğendi",
+    "startedfollowingyou": "seni takip etmeye başladı",
+    "commented": "yorum attı: "
   }
 }

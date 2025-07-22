@@ -42,5 +42,31 @@
   "search": {
     "search": "Search",
     "nosearch": "No search yet"
+  },
+
+  "[id]": {
+    "posts": "Posts",
+    "followers":"Followers",
+    "following":"Following",
+    "nopost":"No post yet"
+  },
+
+  "CommentsModal": {
+    "comments": "Comments",
+    "addacomment": "Add a comment...",
+    "share": "Share"
+  },
+
+  "Post": {
+    "viewall": "View all",
+    "comments": "comments",
+    "bethefirsttolike": "Be the first to like",
+    "likes": " likes"
+  },
+
+  "Notification": {
+    "likedyourpost": "liked your post",
+    "startedfollowingyou": "started following you",
+    "commented": "commented: "
   }
 }

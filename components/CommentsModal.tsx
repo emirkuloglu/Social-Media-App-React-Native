@@ -5,18 +5,20 @@ import { styles } from "@/styles/feed.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
-    FlatList,
-    KeyboardAvoidingView,
-    Modal,
-    Platform,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  FlatList,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import Comment from "./Comment";
 import { Loader } from "./Loader";
+
 
 type CommentsModal = {
   postId: Id<"posts">;
@@ -25,6 +27,7 @@ type CommentsModal = {
 };
 
 export default function CommentsModal({ onClose, postId, visible }: CommentsModal) {
+  const { t } = useTranslation();
   const [newComment, setNewComment] = useState("");
   const comments = useQuery(api.comments.getComments, { postId });
   const addComment = useMutation(api.comments.addComment);
@@ -54,7 +57,7 @@ export default function CommentsModal({ onClose, postId, visible }: CommentsModa
           <TouchableOpacity onPress={onClose}>
             <Ionicons name="close" size={24} color={COLORS.white} />
           </TouchableOpacity>
-          <Text style={styles.modalTitle}>Comments</Text>
+          <Text style={styles.modalTitle}>{t("CommentsModal.comments")}</Text>
           <View style={{ width: 24 }} />
         </View>
 
@@ -72,7 +75,7 @@ export default function CommentsModal({ onClose, postId, visible }: CommentsModa
         <View style={styles.commentInput}>
           <TextInput
             style={styles.input}
-            placeholder="Add a comment..."
+            placeholder={t("CommentsModal.addacomment")}
             placeholderTextColor={COLORS.grey}
             value={newComment}
             onChangeText={setNewComment}
@@ -81,7 +84,7 @@ export default function CommentsModal({ onClose, postId, visible }: CommentsModa
 
           <TouchableOpacity onPress={handleAddComment} disabled={!newComment.trim()}>
             <Text style={[styles.postButton, !newComment.trim() && styles.postButtonDisabled]}>
-              Post
+              {t("CommentsModal.share")}
             </Text>
           </TouchableOpacity>
         </View>
