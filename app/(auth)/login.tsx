@@ -1,11 +1,15 @@
 import { COLORS } from "@/constants/theme";
+import i18n from "@/i18n";
 import { styles } from "@/styles/auth.styles";
 import { useSSO } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
+
 export default function login() {
+  const { t } = useTranslation();
   const { startSSOFlow } = useSSO();
   const router = useRouter();
 
@@ -29,8 +33,18 @@ export default function login() {
         <View style={styles.logoContainer}>
           <Ionicons name="leaf" size={32} color={COLORS.primary} />
         </View>
-        <Text style={styles.appName}>Weirdo</Text>
-        <Text style={styles.tagline}>post something weird</Text>
+
+        <TouchableOpacity onPress={() => i18n.changeLanguage("tr")}>
+          <Text>Türkçe</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => i18n.changeLanguage("en")}>
+          <Text>English</Text>
+        </TouchableOpacity>
+
+
+        <Text style={styles.appName}>{t("login.appName")}</Text>
+        <Text style={styles.tagline}>{t("login.tagline")}</Text>
       </View>
 
       {/* ILLUSTRATION */}
@@ -52,12 +66,10 @@ export default function login() {
           <View style={styles.googleIconContainer}>
             <Ionicons name="logo-google" size={20} color={COLORS.surface} />
           </View>
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
+          <Text style={styles.googleButtonText}>{t("login.continueWithGoogle")}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.termsText}>
-          By continuing, you agree to our Terms and Privacy Policy
-        </Text>
+        <Text style={styles.termsText}>{t("login.termsAndPrivacy")}</Text>
       </View>
     </View>
   );
