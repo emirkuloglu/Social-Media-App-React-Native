@@ -1,5 +1,5 @@
+import LanguagePicker from "@/components/LanguagePicker";
 import { COLORS } from "@/constants/theme";
-import i18n from "@/i18n";
 import { styles } from "@/styles/auth.styles";
 import { useSSO } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,19 +28,16 @@ export default function login() {
 
   return (
     <View style={styles.container}>
+
+      <LanguagePicker />
+
+
       {/* BRAND SECTION */}
       <View style={styles.brandSection}>
         <View style={styles.logoContainer}>
           <Ionicons name="leaf" size={32} color={COLORS.primary} />
         </View>
 
-        <TouchableOpacity onPress={() => i18n.changeLanguage("tr")}>
-          <Text>Türkçe</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => i18n.changeLanguage("en")}>
-          <Text>English</Text>
-        </TouchableOpacity>
 
 
         <Text style={styles.appName}>{t("login.appName")}</Text>
@@ -49,6 +46,7 @@ export default function login() {
 
       {/* ILLUSTRATION */}
       <View style={styles.illustrationContainer}>
+
         <Image
           source={require("../../assets/images/auth-bg-2.jpg")}
           style={styles.illustration}
@@ -68,6 +66,7 @@ export default function login() {
           </View>
           <Text style={styles.googleButtonText}>{t("login.continueWithGoogle")}</Text>
         </TouchableOpacity>
+
 
         <Text style={styles.termsText}>{t("login.termsAndPrivacy")}</Text>
       </View>

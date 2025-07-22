@@ -1,5 +1,5 @@
 import { useAuth } from "@clerk/clerk-expo";
-import { Stack, useRouter, useSegments } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import { useEffect } from "react";
 
 export default function InitialLayout() {
@@ -9,7 +9,7 @@ export default function InitialLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || segments[0] == null) return;
 
     const inAuthScreen = segments[0] === "(auth)";
 
@@ -17,7 +17,5 @@ export default function InitialLayout() {
     else if (isSignedIn && inAuthScreen) router.replace("/(tabs)");
   }, [isLoaded, isSignedIn, segments]);
 
-  if (!isLoaded) return null;
-
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return null;
 }
