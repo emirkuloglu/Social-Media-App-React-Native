@@ -54,6 +54,17 @@ export default defineSchema({
     .index("by_receiver", ["receiverId"])
     .index("by_post", ["postId"]),
 
+  profileVisits: defineTable({
+    visitorClerkId: v.string(),
+    visitedUserId: v.string(),
+    visitedUsername: v.string(),
+    visitedFullname: v.string(),
+    visitedImage: v.string(),
+    visitedAt: v.number(),
+  })
+    .index("byVisitorVisited", ["visitorClerkId", "visitedUserId"]),
+
+
   bookmarks: defineTable({
     userId: v.id("users"),
     postId: v.id("posts"),

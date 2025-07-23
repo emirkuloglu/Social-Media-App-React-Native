@@ -41,7 +41,12 @@
 
   "search": {
     "search": "Search",
-    "nosearch": "No search yet"
+    "nosearch": "No search yet",
+    "placeholder": "Search users...",
+    "resultsfor": "Results",
+    "loading": "Loading...",
+    "noresults": "No results found",
+    "recents": "Recents"
   },
 
   "[id]": {

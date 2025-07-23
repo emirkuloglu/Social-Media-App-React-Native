@@ -41,7 +41,12 @@
 
   "search": {
     "search": "Arama",
-    "nosearch": "Henüz arama yok"
+    "nosearch": "Henüz arama yok",
+    "placeholder": "Kullanıcıları ara...",
+    "resultsfor": "Sonuçlar",
+    "loading": "Yükleniyor...",
+    "noresults": "Hiç sonuç bulunamadı",
+    "recents": "Geçmiş"
   },
 
   "[id]": {

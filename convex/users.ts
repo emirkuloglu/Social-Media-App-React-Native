@@ -154,3 +154,14 @@ async function updateFollowCounts(
     });
   }
 }
+
+export const searchUsers = query({
+  args: { query: v.string() },
+  handler: async (ctx, { query }) => {
+    const users = await ctx.db.query("users").collect();
+
+    return users.filter((user) =>
+      user.username.toLowerCase().includes(query.toLowerCase())
+    );
+  },
+});
