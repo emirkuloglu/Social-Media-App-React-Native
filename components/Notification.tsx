@@ -1,15 +1,24 @@
 import { COLORS } from "@/constants/theme";
 import { styles } from "@/styles/notification.styles";
 import { Ionicons } from "@expo/vector-icons";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, Locale } from "date-fns";
+import { enUS, tr } from "date-fns/locale";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 
 
+const localeMap: { [key: string]: Locale } = {
+  en: enUS,
+  tr: tr,
+};
 export default function Notification({ notification }: any) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const languageCode = i18n.language.split("-")[0];
+  const currentLocale = localeMap[languageCode] || enUS;
+
   return (
     <View style={styles.notificationItem}>
       <View style={styles.notificationContent}>
@@ -22,13 +31,13 @@ export default function Notification({ notification }: any) {
               transition={200}
             />
             <View style={styles.iconBadge}>
-              {notification.type === "like" ? (
-                <Ionicons name="heart" size={14} color={COLORS.primary} />
-              ) : notification.type === "follow" ? (
-                <Ionicons name="person-add" size={14} color="#8B5CF6" />
-              ) : (
-                <Ionicons name="chatbubble" size={14} color="#3B82F6" />
-              )}
+              {
+                notification.type === "like"
+                ? (<Ionicons name="heart" size={14} color={COLORS.primary} />)
+                : notification.type === "follow" 
+                ? (<Ionicons name="person-add" size={14} color="#8B5CF6" />)
+                : (<Ionicons name="chatbubble" size={14} color="#3B82F6" />)
+              }
             </View>
           </TouchableOpacity>
         </Link>
@@ -48,7 +57,7 @@ export default function Notification({ notification }: any) {
               : t("Notification.commented") + `"${notification.comment}"`}
           </Text>
           <Text style={styles.timeAgo}>
-            {formatDistanceToNow(notification._creationTime, { addSuffix: true })}
+            {formatDistanceToNow(notification._creationTime, { addSuffix: true, locale: currentLocale, })}
           </Text>
         </View>
       </View>

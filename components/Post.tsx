@@ -5,13 +5,19 @@ import { styles } from "@/styles/feed.styles";
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, Locale } from "date-fns";
+import { enUS, tr } from "date-fns/locale";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import CommentsModal from "./CommentsModal";
+
+const localeMap: { [key: string]: Locale } = {
+  en: enUS,
+  tr: tr,
+};
 
 
 type PostProps = {
@@ -33,7 +39,10 @@ type PostProps = {
 };
 
 export default function Post({ post }: PostProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const languageCode = i18n.language.split("-")[0];
+  const currentLocale = localeMap[languageCode] || enUS;
+
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
 
@@ -154,7 +163,7 @@ export default function Post({ post }: PostProps) {
         )}
 
         <Text style={styles.timeAgo}>
-          {formatDistanceToNow(post._creationTime, { addSuffix: true })}
+          {formatDistanceToNow(post._creationTime, { addSuffix: true, locale: currentLocale, })}
         </Text>
       </View>
 
