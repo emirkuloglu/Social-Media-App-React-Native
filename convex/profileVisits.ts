@@ -43,3 +43,11 @@ export const getProfileVisits = query({
       .take(20);
   },
 });
+
+
+export const deleteProfileVisit = mutation({
+  args: { id: v.id("profileVisits") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
+  },
+});

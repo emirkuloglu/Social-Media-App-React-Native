@@ -12,11 +12,14 @@ import { useTranslation } from "react-i18next";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function Search() {
+
   const { t } = useTranslation();
   const router = useRouter();
   const { userId } = useAuth();
+
   const addProfileVisit = useMutation(api.profileVisits.addProfileVisit);
   const visitedProfiles = useQuery(api.profileVisits.getProfileVisits, {visitorClerkId: userId!,});
+  const deleteVisit = useMutation(api.profileVisits.deleteProfileVisit);
 
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -29,12 +32,15 @@ export default function Search() {
     []
   );
 
+
+
   useEffect(() => {
     debouncedSetQuery(query);
     return () => {
       debouncedSetQuery.cancel();
     };
   }, [query]);
+  
 
   const users = useQuery(
     api.users.searchUsers,
@@ -44,8 +50,12 @@ export default function Search() {
   // Kendini sonuçlardan çıkar
   const filteredUsers = (users || []).filter(u => u.clerkId !== userId);
 
+
+
+
   return (
     <View style={styles.container}>
+
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{t("search.search")}</Text>
       </View>
@@ -64,43 +74,62 @@ export default function Search() {
 
 
 
-    {visitedProfiles && visitedProfiles.length > 0 && (
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, paddingHorizontal: 16, marginTop: 12 }}>
-      {visitedProfiles.slice(0, 10).map((item) => (
-        <TouchableOpacity
-          key={item._id}
-          onPress={() => router.push(`/user/${item.visitedUserId}`)}
-          style={{
-            backgroundColor: "#1e1e1e",
-            paddingVertical: 8,
-            paddingHorizontal: 14,
-            borderRadius: 24,
-            flexDirection: "row",
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOpacity: 0.2,
-            shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 4,
-            elevation: 3,
-          }}
-          >
-            <Image
-              source={{ uri: item.visitedImage }}
-              style={{ width: 24, height: 24, borderRadius: 12, marginRight: 8 }}
-            />
-            <Text
-              numberOfLines={1}
+      {visitedProfiles && visitedProfiles.length > 0 && (
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, paddingHorizontal: 16, marginTop: 12 }}>
+          {visitedProfiles.slice(0, 10).map((item) => (
+            <View
+              key={item._id}
               style={{
-                color: "#fff",
-                fontSize: 14,
+                position: "relative",
+                backgroundColor: "#1e1e1e",
+                paddingVertical: 8,
+                paddingHorizontal: 14,
+                borderRadius: 24,
+                flexDirection: "row",
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowOffset: { width: 0, height: 2 },
+                shadowRadius: 4,
+                elevation: 3,
+                marginRight: 8,
+                marginBottom: 8,
               }}
             >
-              {item.visitedUsername}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    )}
+              <TouchableOpacity
+                onPress={() => router.push(`/user/${item.visitedUserId}`)}
+                style={{ flexDirection: "row", alignItems: "center", maxWidth: 150 }}
+              >
+                <Image
+                  source={{ uri: item.visitedImage }}
+                  style={{ width: 30, height: 30, borderRadius: 15, marginRight: 8 }}
+                />
+                <Text numberOfLines={1} style={{ color: "#fff", fontSize: 14 }}>
+                  {item.visitedUsername}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => deleteVisit({ id: item._id })}
+                style={{
+                  position: "absolute",
+                  top: -6,
+                  right: -6,
+                  backgroundColor: "black",
+                  borderRadius: 10,
+                  width: 20,
+                  height: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 10,
+                }}
+              >
+                <Ionicons name="close-circle-outline" size={18} color="grey" />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
 
 
 
@@ -140,20 +169,13 @@ export default function Search() {
 
                 router.push(`/user/${item._id}`);
               }}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 15,
-              }}
-            >
+              style={{flexDirection: "row", alignItems: "center", padding: 15}}>
+
               <Image
-                source={{
-                  uri:
-                    item.image ||
-                    "https://default-avatar.com/img.png",
-                }}
+                source={{uri: item.image || "https://default-avatar.com/img.png"}}
                 style={{ width: 60, height: 60, borderRadius: 35, marginRight: 10 }}
               />
+
               <View>
                 <Text style={{ color: COLORS.white, fontSize: 15 }}>{item.username}</Text>
                 <Text style={{ color: COLORS.grey, fontSize: 13 }}>{item.fullname}</Text>
