@@ -134,14 +134,14 @@ export default function Search() {
 
 
 
-      {query.length === 0 ? (
+      {query.length === 0 && filteredUsers.length === 0 && visitedProfiles?.length === 0 ? (
         <View style={[styles.container, styles.centered]}>
           <Ionicons name="search" size={48} color={COLORS.primary} />
-          <Text style={{ fontSize: 20, color: COLORS.white }}>
+          <Text style={{ fontSize: 20, marginBottom:200, color: COLORS.white }}>
             {t("search.nosearch")}
           </Text>
         </View>
-      ) : filteredUsers.length === 0 ? (
+      ) : debouncedQuery.length > 0 && filteredUsers.length === 0 ? (
         <Text
           style={{
             color: COLORS.white,
