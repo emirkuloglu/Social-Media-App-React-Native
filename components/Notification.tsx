@@ -1,6 +1,8 @@
 import { COLORS } from "@/constants/theme";
+import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/notification.styles";
 import { Ionicons } from "@expo/vector-icons";
+import { useMutation } from "convex/react";
 import { formatDistanceToNow, Locale } from "date-fns";
 import { enUS, tr } from "date-fns/locale";
 import { Image } from "expo-image";
@@ -18,6 +20,7 @@ export default function Notification({ notification }: any) {
 
   const languageCode = i18n.language.split("-")[0];
   const currentLocale = localeMap[languageCode] || enUS;
+  const deleteNotification = useMutation(api.notifications.deleteNotification);
 
   return (
     <View style={styles.notificationItem}>
@@ -49,7 +52,7 @@ export default function Notification({ notification }: any) {
             </TouchableOpacity>
           </Link>
 
-          <Text style={styles.action}>
+          <Text style={styles.action} numberOfLines={2} ellipsizeMode="tail">
             {notification.type === "follow"
               ? t("Notification.startedfollowingyou")
               : notification.type === "like"
@@ -70,6 +73,19 @@ export default function Notification({ notification }: any) {
           transition={200}
         />
       )}
+
+      <TouchableOpacity
+        onPress={() => deleteNotification({ id: notification._id })}
+        style={{
+          position: "absolute",
+          top: 1,
+          right: -7,
+          padding: 1,
+          zIndex: 10,
+        }}
+      >
+        <Ionicons name="close-circle" size={20} color="#888" />
+      </TouchableOpacity>
     </View>
   );
 }

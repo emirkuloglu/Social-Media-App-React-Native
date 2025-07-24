@@ -1,4 +1,5 @@
-import { query } from "./_generated/server";
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 import { getAuthenticatedUser } from "./users";
 
 export const getNotifications = query({
@@ -39,5 +40,15 @@ export const getNotifications = query({
     );
 
     return notificationsWithInfo;
+  },
+});
+
+
+export const deleteNotification = mutation({
+  args: {
+    id: v.id("notifications"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
   },
 });

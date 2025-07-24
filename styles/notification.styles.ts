@@ -25,7 +25,10 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 255, 255, 0.12)',
+    paddingBottom: 15,
   },
   notificationContent: {
     flex: 1,
@@ -79,6 +82,7 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 6,
+    marginRight: 35,
   },
   centered: {
     justifyContent: "center",
