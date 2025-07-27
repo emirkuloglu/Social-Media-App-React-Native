@@ -15,7 +15,16 @@
     "newpost": "Yeni Gönderi",
     "selectimage": "Bir resim seçmek için dokun",
     "share": "Paylaş",
-    "change": "Değiştir"
+    "change": "Değiştir",
+    "permission_camera": "Kamera izni gerekiyor!",
+    "permission_gallery": "Galeri izni gerekiyor!"
+  },
+
+    "ImageSourceModal": {
+    "selectsource": "Resim Seç",
+    "camera": "Kamera",
+    "gallery": "Galeri",
+    "cancel": "İptal"
   },
 
   "index": {

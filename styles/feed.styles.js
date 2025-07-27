@@ -82,8 +82,8 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
   },
   postImage: {
-    width: width,
-    height: width,
+  width: width,
+  height: (width * 4) / 3,
   },
   postActions: {
     flexDirection: "row",

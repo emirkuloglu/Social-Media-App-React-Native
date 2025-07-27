@@ -15,7 +15,16 @@
     "newpost": "New Post",
     "selectimage": "Tap to select an image",
     "share": "Share",
-    "change": "Change"
+    "change": "Change",
+    "permission_camera": "Camera permission is required!",
+    "permission_gallery": "Gallery permission is required!"
+  },
+
+  "ImageSourceModal": {
+    "selectsource": "Select Image",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "cancel": "Cancel"
   },
 
   "index": {

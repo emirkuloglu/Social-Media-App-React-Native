@@ -1,3 +1,4 @@
+import ImageSourceModal from "@/components/ImageSourceModal";
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
 import { styles } from "@/styles/create.styles";
@@ -21,25 +22,46 @@ import {
   View,
 } from "react-native";
 
-
 export default function CreateScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { user } = useUser();
 
+  const [showSourceModal, setShowSourceModal] = useState(false);
   const [caption, setCaption] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "images",
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
+  const pickImage = async (source: "camera" | "gallery") => {
+    const permission =
+      source === "camera"
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!result.canceled) setSelectedImage(result.assets[0].uri);
+    if (permission.status !== "granted") {
+      alert(
+        source === "camera" ? t("create.permission_camera") : t("create.permission_gallery")
+      );
+      return;
+    }
+
+    const result =
+      source === "camera"
+        ? await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [3, 4],
+            quality: 1,
+          })
+        : await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [3, 4],
+            quality: 1,
+          });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
   };
 
   const generateUploadUrl = useMutation(api.posts.generateUploadUrl);
@@ -65,7 +87,6 @@ export default function CreateScreen() {
 
       setSelectedImage(null);
       setCaption("");
-
       router.push("/(tabs)");
     } catch (error) {
       console.log("Error sharing post");
@@ -85,10 +106,24 @@ export default function CreateScreen() {
           <View style={{ width: 28 }} />
         </View>
 
-        <TouchableOpacity style={styles.emptyImageContainer} onPress={pickImage}>
+        <TouchableOpacity
+          style={styles.emptyImageContainer}
+          onPress={() => setShowSourceModal(true)}
+        >
           <Ionicons name="image-outline" size={48} color={COLORS.grey} />
           <Text style={styles.emptyImageText}>{t("create.selectimage")}</Text>
         </TouchableOpacity>
+
+        {showSourceModal && (
+          <ImageSourceModal
+            visible={showSourceModal}
+            onClose={() => setShowSourceModal(false)}
+            onSelect={(source) => {
+              pickImage(source);
+              setShowSourceModal(false);
+            }}
+          />
+        )}
       </View>
     );
   }
@@ -146,7 +181,7 @@ export default function CreateScreen() {
               />
               <TouchableOpacity
                 style={styles.changeImageButton}
-                onPress={pickImage}
+                onPress={() => setShowSourceModal(true)}
                 disabled={isSharing}
               >
                 <Ionicons name="image-outline" size={20} color={COLORS.white} />
@@ -177,6 +212,17 @@ export default function CreateScreen() {
           </View>
         </ScrollView>
       </View>
+
+      {showSourceModal && (
+        <ImageSourceModal
+          visible={showSourceModal}
+          onClose={() => setShowSourceModal(false)}
+          onSelect={(source) => {
+            pickImage(source);
+            setShowSourceModal(false);
+          }}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 }
