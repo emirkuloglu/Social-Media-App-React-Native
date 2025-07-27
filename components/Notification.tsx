@@ -38,8 +38,8 @@ export default function Notification({ notification }: any) {
                 notification.type === "like"
                 ? (<Ionicons name="heart" size={14} color={COLORS.primary} />)
                 : notification.type === "follow" 
-                ? (<Ionicons name="person-add" size={14} color="#8B5CF6" />)
-                : (<Ionicons name="chatbubble" size={14} color="#3B82F6" />)
+                ? (<Ionicons name="person-add" size={14} color={COLORS.primary} />)
+                : (<Ionicons name="chatbubble" size={14} color={COLORS.primary} />)
               }
             </View>
           </TouchableOpacity>
