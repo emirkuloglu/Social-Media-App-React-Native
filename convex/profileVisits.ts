@@ -1,7 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-
 export const addProfileVisit = mutation({
   args: {
     visitorClerkId: v.string(),
@@ -43,7 +42,6 @@ export const getProfileVisits = query({
       .take(20);
   },
 });
-
 
 export const deleteProfileVisit = mutation({
   args: { id: v.id("profileVisits") },

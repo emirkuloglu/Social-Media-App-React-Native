@@ -38,14 +38,14 @@
   },
 
   "profile": {
-    "posts": "Gönderi",
+    "posts": "Gönderiler",
     "followers": "Takipçi",
     "following": "Takip",
     "editprofile": "Profili Düzenle",
     "name": "İsim",
     "bio": "Biyografi",
     "savechanges": "Değişiklikleri Kaydet",
-    "nopost": "Henüz gönderi yok"
+    "noposts": "Henüz gönderi yok"
   },
 
   "search": {
@@ -62,7 +62,8 @@
     "posts": "Gönderi",
     "followers":"Takipçi",
     "following":"Takip",
-    "nopost":"Henüz gönderi yok"
+    "follow": "Takip et",
+    "noposts":"Henüz gönderi yok"
   },
 
   "CommentsModal": {

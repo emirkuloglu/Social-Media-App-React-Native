@@ -1,13 +1,14 @@
 import { Loader } from "@/components/Loader";
+import Post from "@/components/Post";
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
-import { Doc } from "@/convex/_generated/dataModel";
+import { Id } from "@/convex/_generated/dataModel";
 import { styles } from "@/styles/profile.styles";
 import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -26,25 +27,52 @@ import {
 export default function Profile() {
   const { t } = useTranslation();
   const { signOut, userId } = useAuth();
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+
+  // Aktif kullanıcı verisi
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
 
+  // Profil sahibinin postları
+  const profileUserPosts = useQuery(
+    api.posts.getPostsByUser,
+    currentUser ? { userId: currentUser._id } : "skip"
+  );
+
+  // Modalda gösterilecek kullanıcı ID ve o kullanıcının postları
+  const [modalUserId, setModalUserId] = useState<Id<"users"> | null>(null);
+  const [modalStartIndex, setModalStartIndex] = useState(0);
+  const ITEM_HEIGHT = 700;
+  const userPosts = useQuery(
+    api.posts.getPostsByUser,
+    modalUserId ? { userId: modalUserId } : "skip"
+  );
+
+  // Modal görünürlüğü
+  const [showUserPostsModal, setShowUserPostsModal] = useState(false);
+
+  // Profil düzenleme modali için state
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [editedProfile, setEditedProfile] = useState({
     fullname: currentUser?.fullname || "",
     bio: currentUser?.bio || "",
   });
 
-  const [selectedPost, setSelectedPost] = useState<Doc<"posts"> | null>(null);
-  const posts = useQuery(api.posts.getPostsByUser, {});
-
   const updateProfile = useMutation(api.users.updateProfile);
+
+  useEffect(() => {
+    if (currentUser) {
+      setEditedProfile({
+        fullname: currentUser.fullname || "",
+        bio: currentUser.bio || "",
+      });
+    }
+  }, [currentUser]);
 
   const handleSaveProfile = async () => {
     await updateProfile(editedProfile);
     setIsEditModalVisible(false);
   };
 
-  if (!currentUser || posts === undefined) return <Loader />;
+  if (!currentUser) return <Loader />;
 
   return (
     <View style={styles.container}>
@@ -93,7 +121,10 @@ export default function Profile() {
           {currentUser.bio && <Text style={styles.bio}>{currentUser.bio}</Text>}
 
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.editButton} onPress={() => setIsEditModalVisible(true)}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => setIsEditModalVisible(true)}
+            >
               <Text style={styles.editButtonText}>{t("profile.editprofile")}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareButton}>
@@ -102,14 +133,22 @@ export default function Profile() {
           </View>
         </View>
 
-        {posts.length === 0 && <NoPostsFound />}
+        {(!profileUserPosts || profileUserPosts.length === 0) && <NoPostsFound />}
 
+        {/* Profil sahibinin gönderileri */}
         <FlatList
-          data={posts}
+          data={(profileUserPosts || []).slice().reverse()}
           numColumns={3}
           scrollEnabled={false}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.gridItem} onPress={() => setSelectedPost(item)}>
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={styles.gridItem}
+              onPress={() => {
+                setModalUserId(item.userId);
+                setModalStartIndex(index);  // tıklanan postun indexini sakla
+                setShowUserPostsModal(true);
+              }}
+            >
               <Image
                 source={item.imageUrl}
                 style={styles.gridImage}
@@ -118,10 +157,12 @@ export default function Profile() {
               />
             </TouchableOpacity>
           )}
+          keyExtractor={(item) => item._id}
         />
+
       </ScrollView>
 
-      {/* EDIT PROFILE MODAL */}
+      {/* PROFİL DÜZENLEME MODALI */}
       <Modal
         visible={isEditModalVisible}
         animationType="slide"
@@ -146,7 +187,9 @@ export default function Profile() {
                 <TextInput
                   style={styles.input}
                   value={editedProfile.fullname}
-                  onChangeText={(text) => setEditedProfile((prev) => ({ ...prev, fullname: text }))}
+                  onChangeText={(text) =>
+                    setEditedProfile((prev) => ({ ...prev, fullname: text }))
+                  }
                   placeholderTextColor={COLORS.grey}
                 />
               </View>
@@ -156,7 +199,9 @@ export default function Profile() {
                 <TextInput
                   style={[styles.input, styles.bioInput]}
                   value={editedProfile.bio}
-                  onChangeText={(text) => setEditedProfile((prev) => ({ ...prev, bio: text }))}
+                  onChangeText={(text) =>
+                    setEditedProfile((prev) => ({ ...prev, bio: text }))
+                  }
                   multiline
                   numberOfLines={4}
                   placeholderTextColor={COLORS.grey}
@@ -171,29 +216,37 @@ export default function Profile() {
         </TouchableWithoutFeedback>
       </Modal>
 
-      {/* SELECTED IMAGE MODAL */}
+      {/* KULLANICININ TÜM POSTLARINI GÖSTEREN MODAL */}
       <Modal
-        visible={!!selectedPost}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setSelectedPost(null)}
+        visible={showUserPostsModal}
+        animationType="slide"
+        onRequestClose={() => setShowUserPostsModal(false)}
+        transparent={false}
       >
-        <View style={styles.modalBackdrop}>
-          {selectedPost && (
-            <View style={styles.postDetailContainer}>
-              <View style={styles.postDetailHeader}>
-                <TouchableOpacity onPress={() => setSelectedPost(null)}>
-                  <Ionicons name="close" size={24} color={COLORS.white} />
-                </TouchableOpacity>
-              </View>
+        <View style={{ flex: 1, backgroundColor: COLORS.background }}>
 
-              <Image
-                source={selectedPost.imageUrl}
-                cachePolicy={"memory-disk"}
-                style={styles.postDetailImage}
-              />
-            </View>
-          )}
+          <View style={[styles.header, { flexDirection: "row", alignItems: "center", padding: 16, paddingVertical: 20, paddingHorizontal: 16 }]}>
+            <TouchableOpacity onPress={() => setShowUserPostsModal(false)}>
+              <Ionicons name="arrow-back" size={30} color={COLORS.white} />
+            </TouchableOpacity>
+            <Text style={[styles.headerTitle, { flex: 1, textAlign: "justify", marginLeft:20, fontSize: 22 }]}>
+              {t("profile.posts")}
+            </Text>
+          </View>
+          
+          <FlatList
+            data={(userPosts || []).slice().reverse()}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => <Post post={item} />}
+            contentContainerStyle={{ paddingBottom: 60 }}
+            showsVerticalScrollIndicator={false}
+            initialScrollIndex={modalStartIndex}   // buraya tıklanan indexi veriyoruz
+            getItemLayout={(_, index) => ({
+              length: ITEM_HEIGHT,
+              offset: ITEM_HEIGHT * index,
+              index,
+            })}
+          />
         </View>
       </Modal>
     </View>

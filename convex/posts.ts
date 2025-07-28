@@ -198,15 +198,44 @@ export const getPostsByUser = query({
     userId: v.optional(v.id("users")),
   },
   handler: async (ctx, args) => {
-    const user = args.userId ? await ctx.db.get(args.userId) : await getAuthenticatedUser(ctx);
+    const currentUser = await getAuthenticatedUser(ctx);
+    const user = args.userId ? await ctx.db.get(args.userId) : currentUser;
 
     if (!user) throw new Error("User not found");
 
+    // Kullanıcının postlarını al
     const posts = await ctx.db
       .query("posts")
       .withIndex("by_user", (q) => q.eq("userId", args.userId || user._id))
       .collect();
 
-    return posts;
+    // Postları, gerekli author ve like/bookmark bilgileri ile genişlet
+    const postsWithInfo = await Promise.all(posts.map(async (post) => {
+      // Author bilgisi
+      const postAuthor = await ctx.db.get(post.userId);
+
+      // Beğeni durumu
+      const like = await ctx.db.query("likes")
+        .withIndex("by_user_and_post", q => q.eq("userId", currentUser._id).eq("postId", post._id))
+        .first();
+
+      // Kaydetme durumu
+      const bookmark = await ctx.db.query("bookmarks")
+        .withIndex("by_user_and_post", q => q.eq("userId", currentUser._id).eq("postId", post._id))
+        .first();
+
+      return {
+        ...post,
+        author: {
+          _id: postAuthor?._id ? String(postAuthor._id) : "",
+          username: postAuthor?.username || "",
+          image: postAuthor?.image || "",
+        },
+        isLiked: !!like,
+        isBookmarked: !!bookmark,
+      };
+    }));
+
+    return postsWithInfo;
   },
 });

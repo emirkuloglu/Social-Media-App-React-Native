@@ -1,4 +1,5 @@
 import { Loader } from "@/components/Loader";
+import Post from "@/components/Post";
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -7,9 +8,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
-
+import {
+  FlatList,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function UserProfileScreen() {
   const { t } = useTranslation();
@@ -27,13 +35,29 @@ export default function UserProfileScreen() {
     else router.replace("/(tabs)");
   };
 
+  // Modal ve modalda gösterilecek post index'i
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [modalStartIndex, setModalStartIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
+
+  // Post tam ekran yüksekliği, kendi Post bileşenine göre ayarla
+  const ITEM_HEIGHT = 700; 
+
   if (profile === undefined || posts === undefined || isFollowing === undefined) return <Loader />;
+
+  const handlePostPress = (index: number) => {
+    setModalStartIndex(index);
+    setShowPostModal(true);
+    setTimeout(() => {
+      flatListRef.current?.scrollToIndex({ index, animated: false });
+    }, 100);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack}>
-          <Ionicons name="arrow-back" size={24} color={COLORS.white} />
+          <Ionicons name="arrow-back" size={30} color={COLORS.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{profile.username}</Text>
         <View style={{ width: 24 }} />
@@ -42,7 +66,6 @@ export default function UserProfileScreen() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.profileInfo}>
           <View style={styles.avatarAndStats}>
-            {/* AVATAR */}
             <Image
               source={profile.image}
               style={styles.avatar}
@@ -50,7 +73,6 @@ export default function UserProfileScreen() {
               cachePolicy="memory-disk"
             />
 
-            {/* STATS */}
             <View style={styles.statsContainer}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.posts}</Text>
@@ -70,14 +92,14 @@ export default function UserProfileScreen() {
           <Text style={styles.name}>{profile.fullname}</Text>
           {profile.bio && <Text style={styles.bio}>{profile.bio}</Text>}
 
-          <Pressable
+          <TouchableOpacity
             style={[styles.followButton, isFollowing && styles.followingButton]}
             onPress={() => toggleFollow({ followingId: id as Id<"users"> })}
           >
             <Text style={[styles.followButtonText, isFollowing && styles.followingButtonText]}>
-              {isFollowing ? "Following" : "Follow"}
+              {isFollowing ? t("[id].following") : t("[id].follow")}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.postsGrid}>
@@ -88,11 +110,14 @@ export default function UserProfileScreen() {
             </View>
           ) : (
             <FlatList
-              data={posts}
+              data={(posts || []).slice().reverse()}
               numColumns={3}
               scrollEnabled={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={styles.gridItem}>
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  style={styles.gridItem}
+                  onPress={() => handlePostPress(index)}
+                >
                   <Image
                     source={item.imageUrl}
                     style={styles.gridImage}
@@ -107,6 +132,39 @@ export default function UserProfileScreen() {
           )}
         </View>
       </ScrollView>
+
+      {/* POSTLARI FULLSCREEN MODALDA DİKEY GÖSTERME */}
+      <Modal
+        visible={showPostModal}
+        animationType="slide"
+        onRequestClose={() => setShowPostModal(false)}
+        transparent={false}
+      >
+        <View style={{ flex: 1, backgroundColor: COLORS.background }}>
+          <View style={[styles.header, { flexDirection: "row", alignItems: "center", padding: 16, paddingVertical: 20, paddingHorizontal: 16 }]}>
+            <TouchableOpacity onPress={() => setShowPostModal(false)}>
+              <Ionicons name="arrow-back" size={30} color={COLORS.white} />
+            </TouchableOpacity>
+            <Text style={[styles.headerTitle, { flex: 1, textAlign: "justify", marginLeft:20, fontSize: 22 }]}>
+              {t("[id].posts")}
+            </Text>
+          </View>
+
+          <FlatList
+            data={(posts || []).slice().reverse()}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => <Post post={item} />}
+            contentContainerStyle={{ paddingBottom: 60 }}
+            showsVerticalScrollIndicator={false}
+            initialScrollIndex={modalStartIndex}
+            getItemLayout={(_, index) => ({
+              length: ITEM_HEIGHT,
+              offset: ITEM_HEIGHT * index,
+              index,
+            })}
+          />
+        </View>
+      </Modal>
     </View>
   );
 }

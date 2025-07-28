@@ -62,7 +62,8 @@
     "posts": "Posts",
     "followers":"Followers",
     "following":"Following",
-    "nopost":"No post yet"
+    "follow": "Follow",
+    "noposts":"No post yet"
   },
 
   "CommentsModal": {
