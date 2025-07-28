@@ -133,7 +133,7 @@ export default function UserProfileScreen() {
         </View>
       </ScrollView>
 
-      {/* POSTLARI FULLSCREEN MODALDA DİKEY GÖSTERME */}
+      {/* POSTLARI FULLSCREEN MODALDA GÖSTERME */}
       <Modal
         visible={showPostModal}
         animationType="slide"
