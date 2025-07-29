@@ -8,6 +8,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation, useQuery } from "convex/react";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,7 +22,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 
 export default function Profile() {
@@ -48,6 +49,13 @@ export default function Profile() {
 
   // Modal görünürlüğü
   const [showUserPostsModal, setShowUserPostsModal] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
+const followers = useQuery(api.follows.getFollowers, currentUser?._id ? { userId: currentUser._id } : "skip") ?? [];
+const following = useQuery(api.follows.getFollowing, currentUser?._id ? { userId: currentUser._id } : "skip") ?? [];
+
+const router = useRouter();
 
   // Profil düzenleme modali için state
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -102,18 +110,22 @@ export default function Profile() {
             </View>
 
             <View style={styles.statsContainer}>
+
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{currentUser.posts}</Text>
                 <Text style={styles.statLabel}>{t("profile.posts")}</Text>
               </View>
-              <View style={styles.statItem}>
+
+              <TouchableOpacity onPress={() => setShowFollowers(true)}>
                 <Text style={styles.statNumber}>{currentUser.followers}</Text>
                 <Text style={styles.statLabel}>{t("profile.followers")}</Text>
-              </View>
-              <View style={styles.statItem}>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setShowFollowing(true)}>
                 <Text style={styles.statNumber}>{currentUser.following}</Text>
                 <Text style={styles.statLabel}>{t("profile.following")}</Text>
-              </View>
+              </TouchableOpacity>
+
             </View>
           </View>
 
@@ -249,6 +261,202 @@ export default function Profile() {
           />
         </View>
       </Modal>
+
+
+
+      {/* KULLANICININ TAKİPÇİLERİNİ GÖSTEREN MODAL */}
+      <Modal
+        visible={showFollowers}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowFollowers(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.6)", // Yarı saydam koyu arka plan
+            justifyContent: "center",
+            padding: 20,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.background,
+              borderRadius: 20,
+              paddingVertical: 20,
+              paddingHorizontal: 16,
+              maxHeight: "80%",
+            }}
+          >
+            {/* Header */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 12,
+                borderBottomWidth: 1,
+                borderColor: COLORS.grey,
+                paddingBottom: 10,
+              }}
+            >
+              <Text style={{ color: COLORS.white, fontSize: 20, fontWeight: "bold" }}>
+                Takipçiler
+              </Text>
+              <TouchableOpacity onPress={() => setShowFollowers(false)}>
+                <Ionicons name="close" size={28} color={COLORS.white} />
+              </TouchableOpacity>
+            </View>
+
+            <FlatList
+              data={followers}
+              keyExtractor={(item) => item?._id ?? ""}
+              contentContainerStyle={{ paddingBottom: 8 }}
+              ListEmptyComponent={() => (
+                <View style={{ alignItems: "center", paddingVertical: 40 }}>
+                  <Ionicons name="people-outline" size={64} color={COLORS.grey} />
+                  <Text
+                    style={{
+                      color: COLORS.grey,
+                      fontSize: 18,
+                      marginTop: 12,
+                      textAlign: "center",
+                    }}
+                  >
+                    Henüz takipçi yok
+                  </Text>
+                </View>
+              )}
+
+              renderItem={({ item }) =>
+                item ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShowFollowers(false);
+                      router.push(`/user/${item._id}`);
+                    }}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingVertical: 10,
+                      borderRadius: 12,
+                      backgroundColor: COLORS.background ?? "#222",
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <Image
+                      source={{ uri: item.image }}
+                      style={{ width: 48, height: 48, borderRadius: 24, marginRight: 16 }}
+                    />
+                    <Text style={{ color: COLORS.white, fontSize: 17, fontWeight: "600" }}>
+                      {item.username}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null
+              }
+            />
+          </View>
+        </View>
+      </Modal>
+
+
+
+
+      {/* KULLANICININ TAKİP ETTİKLERİNİ GÖSTEREN MODAL */}
+      <Modal
+        visible={showFollowing}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowFollowing(false)}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            justifyContent: "center",
+            padding: 20,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.background,
+              borderRadius: 20,
+              paddingVertical: 20,
+              paddingHorizontal: 16,
+              maxHeight: "80%",
+            }}
+          >
+            {/* Header */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 12,
+                borderBottomWidth: 1,
+                borderColor: COLORS.grey,
+                paddingBottom: 8,
+              }}
+            >
+              <Text style={{ color: COLORS.white, fontSize: 20, fontWeight: "bold" }}>
+                Takip Edilenler
+              </Text>
+              <TouchableOpacity onPress={() => setShowFollowing(false)}>
+                <Ionicons name="close" size={28} color={COLORS.white} />
+              </TouchableOpacity>
+            </View>
+
+            <FlatList
+              data={following}
+              keyExtractor={(item) => item?._id ?? ""}
+              contentContainerStyle={{ paddingBottom: 8 }}
+              ListEmptyComponent={() => (
+                <View style={{ alignItems: "center", paddingVertical: 40 }}>
+                  <Ionicons name="people-outline" size={64} color={COLORS.grey} />
+                  <Text
+                    style={{
+                      color: COLORS.grey,
+                      fontSize: 18,
+                      marginTop: 12,
+                      textAlign: "center",
+                    }}
+                  >
+                    Henüz takip ettiği kimse yok
+                  </Text>
+                </View>
+              )}
+
+              renderItem={({ item }) =>
+                item ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShowFollowing(false);
+                      router.push(`/user/${item._id}`);
+                    }}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingVertical: 10,
+                      borderRadius: 12,
+                      backgroundColor: COLORS.background ?? "#222",
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <Image
+                      source={{ uri: item.image }}
+                      style={{ width: 48, height: 48, borderRadius: 24, marginRight: 16 }}
+                    />
+                    <Text style={{ color: COLORS.white, fontSize: 17, fontWeight: "600" }}>
+                      {item.username}
+                    </Text>
+                  </TouchableOpacity>
+                ) : null
+              }
+            />
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 }
