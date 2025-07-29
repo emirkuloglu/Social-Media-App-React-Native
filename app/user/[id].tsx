@@ -1,3 +1,4 @@
+import FollowListModal from "@/components/FollowListModal";
 import { Loader } from "@/components/Loader";
 import Post from "@/components/Post";
 import { COLORS } from "@/constants/theme";
@@ -34,6 +35,13 @@ export default function UserProfileScreen() {
     if (router.canGoBack()) router.back();
     else router.replace("/(tabs)");
   };
+
+  //Modal ve modalda gösterilecek Takipçi-Takip index'i
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
+  const followers = useQuery(api.follows.getFollowers, profile ? { userId: profile._id } : "skip") ?? [];
+  const following = useQuery(api.follows.getFollowing, profile ? { userId: profile._id } : "skip") ?? [];
 
   // Modal ve modalda gösterilecek post index'i
   const [showPostModal, setShowPostModal] = useState(false);
@@ -74,18 +82,22 @@ export default function UserProfileScreen() {
             />
 
             <View style={styles.statsContainer}>
+
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.posts}</Text>
                 <Text style={styles.statLabel}>{t("[id].posts")}</Text>
               </View>
-              <View style={styles.statItem}>
+
+              <TouchableOpacity onPress={() => setShowFollowers(true)} style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.followers}</Text>
                 <Text style={styles.statLabel}>{t("[id].followers")}</Text>
-              </View>
-              <View style={styles.statItem}>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => setShowFollowing(true)} style={styles.statItem}>
                 <Text style={styles.statNumber}>{profile.following}</Text>
                 <Text style={styles.statLabel}>{t("[id].following")}</Text>
-              </View>
+              </TouchableOpacity>
+
             </View>
           </View>
 
@@ -165,6 +177,22 @@ export default function UserProfileScreen() {
           />
         </View>
       </Modal>
+
+
+      {/* TAKİPÇİ-TAKİP MODALI */}
+      <FollowListModal
+        visible={showFollowers}
+        onClose={() => setShowFollowers(false)}
+        data={followers}
+        title="Followers"
+      />
+
+      <FollowListModal
+        visible={showFollowing}
+        onClose={() => setShowFollowing(false)}
+        data={following}
+        title="Following"
+      />
     </View>
   );
 }
