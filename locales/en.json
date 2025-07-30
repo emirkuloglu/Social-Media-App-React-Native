@@ -72,6 +72,12 @@
     "share": "Share"
   },
 
+  "FollowListModal":{
+    "placeholder":"Search users...",
+    "nofollowersyet": "No followers yet",
+    "nofollowsyet": "No follow yet"
+  },
+
   "Post": {
     "viewall": "View all",
     "comments": "comments",

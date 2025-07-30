@@ -72,6 +72,12 @@
     "share": "Paylaş"
   },
 
+  "FollowListModal":{
+    "placeholder":"Kullanıcıları ara...",
+    "nofollowersyet": "Henüz hiç takipçin yok",
+    "nofollowsyet": "Henüz takip ettiğin kimse yok"
+  },
+
   "Post": {
     "viewall": "Tüm",
     "comments": "yorumu görüntüle",
