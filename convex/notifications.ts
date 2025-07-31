@@ -14,7 +14,8 @@ export const getNotifications = query({
 
     const notificationsWithInfo = await Promise.all(
       notifications.map(async (notification) => {
-        const sender = (await ctx.db.get(notification.senderId))!;
+        const sender = await ctx.db.get(notification.senderId);
+
         let post = null;
         let comment = null;
 
@@ -28,11 +29,17 @@ export const getNotifications = query({
 
         return {
           ...notification,
-          sender: {
-            _id: sender._id,
-            username: sender.username,
-            image: sender.image,
-          },
+          sender: sender
+            ? {
+                _id: sender._id,
+                username: sender.username,
+                image: sender.image,
+              }
+            : {
+                _id: null,
+                username: "Silinmiş Kullanıcı",
+                image: null,
+              },
           post,
           comment: comment?.content,
         };

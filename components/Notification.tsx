@@ -10,47 +10,77 @@ import { Link } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 
-
 const localeMap: { [key: string]: Locale } = {
   en: enUS,
   tr: tr,
 };
+
 export default function Notification({ notification }: any) {
   const { t, i18n } = useTranslation();
-
   const languageCode = i18n.language.split("-")[0];
   const currentLocale = localeMap[languageCode] || enUS;
   const deleteNotification = useMutation(api.notifications.deleteNotification);
 
+  const senderExists = !!notification.sender?._id;
+
   return (
     <View style={styles.notificationItem}>
       <View style={styles.notificationContent}>
-        <Link href={`/user/${notification.sender._id}`} asChild>
-          <TouchableOpacity style={styles.avatarContainer}>
+        {senderExists ? (
+          <Link href={`/user/${notification.sender._id}`} asChild>
+            <TouchableOpacity style={styles.avatarContainer}>
+              <Image
+                source={notification.sender.image}
+                style={styles.avatar}
+                contentFit="cover"
+                transition={200}
+              />
+              <View style={styles.iconBadge}>
+                {notification.type === "like" ? (
+                  <Ionicons name="heart" size={14} color={COLORS.primary} />
+                ) : notification.type === "follow" ? (
+                  <Ionicons name="person-add" size={14} color={COLORS.primary} />
+                ) : (
+                  <Ionicons name="chatbubble" size={14} color={COLORS.primary} />
+                )}
+              </View>
+            </TouchableOpacity>
+          </Link>
+        ) : (
+          <View
+            style={[
+              styles.avatarContainer,
+              { opacity: 0.5 }, // Silinmiş kullanıcı için yarı saydam
+            ]}
+          >
             <Image
-              source={notification.sender.image}
+              source={require('@/assets/images/default_avatar.png')}
               style={styles.avatar}
               contentFit="cover"
               transition={200}
             />
             <View style={styles.iconBadge}>
-              {
-                notification.type === "like"
-                ? (<Ionicons name="heart" size={14} color={COLORS.primary} />)
-                : notification.type === "follow" 
-                ? (<Ionicons name="person-add" size={14} color={COLORS.primary} />)
-                : (<Ionicons name="chatbubble" size={14} color={COLORS.primary} />)
-              }
+              {notification.type === "like" ? (
+                <Ionicons name="heart" size={14} color={COLORS.primary} />
+              ) : notification.type === "follow" ? (
+                <Ionicons name="person-add" size={14} color={COLORS.primary} />
+              ) : (
+                <Ionicons name="chatbubble" size={14} color={COLORS.primary} />
+              )}
             </View>
-          </TouchableOpacity>
-        </Link>
+          </View>
+        )}
 
         <View style={styles.notificationInfo}>
-          <Link href={`/user/${notification.sender._id}`} asChild>
-            <TouchableOpacity>
-              <Text style={styles.username}>{notification.sender.username}</Text>
-            </TouchableOpacity>
-          </Link>
+          {senderExists ? (
+            <Link href={`/user/${notification.sender._id}`} asChild>
+              <TouchableOpacity>
+                <Text style={styles.username}>{notification.sender.username}</Text>
+              </TouchableOpacity>
+            </Link>
+          ) : (
+            <Text style={[styles.username, { opacity: 0.5 }]}>Silinmiş Kullanıcı</Text>
+          )}
 
           <Text style={styles.action} numberOfLines={2} ellipsizeMode="tail">
             {notification.type === "follow"
@@ -60,7 +90,10 @@ export default function Notification({ notification }: any) {
               : t("Notification.commented") + `"${notification.comment}"`}
           </Text>
           <Text style={styles.timeAgo}>
-            {formatDistanceToNow(notification._creationTime, { addSuffix: true, locale: currentLocale, })}
+            {formatDistanceToNow(notification._creationTime, {
+              addSuffix: true,
+              locale: currentLocale,
+            })}
           </Text>
         </View>
       </View>
