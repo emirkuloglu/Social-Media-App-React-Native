@@ -51,12 +51,13 @@ export const getComments = query({
         return {
           ...comment,
           user: {
-            fullname: user!.fullname,
-            image: user!.image,
+            fullname: user?.fullname || "Bilinmiyor",
+            image: user?.image || "", // ya da varsayılan avatar
           },
         };
       })
     );
+
 
     return commentsWithInfo;
   },
