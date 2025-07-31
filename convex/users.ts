@@ -35,6 +35,35 @@ export const createUser = mutation({
   },
 });
 
+export const deleteUser = mutation({
+  args: { clerkId: v.string() },
+  handler: async (ctx, { clerkId }) => {
+    const user = await ctx.db.query("users").withIndex("by_clerk_id", q => q.eq("clerkId", clerkId)).unique();
+    if (!user) throw new Error("User not found");
+
+    // Takip ettiği kayıtları sil ve takip edilenlerin takipçi sayısını azalt
+    const following = await ctx.db.query("follows").withIndex("by_follower", q => q.eq("followerId", user._id)).collect();
+    for (const f of following) {
+      await ctx.db.delete(f._id);
+      // Takip edilen kişinin followers sayısını azalt
+      await updateFollowCounts(ctx, user._id, f.followingId, false);
+    }
+
+    // Kendisini takip eden kayıtları sil ve takip edenlerin following sayısını azalt
+    const followers = await ctx.db.query("follows").withIndex("by_following", q => q.eq("followingId", user._id)).collect();
+    for (const f of followers) {
+      await ctx.db.delete(f._id);
+      // Takip eden kişinin following sayısını azalt
+      await updateFollowCounts(ctx, f.followerId, user._id, false);
+    }
+
+    // Son olarak kullanıcıyı sil
+    await ctx.db.delete(user._id);
+
+    return true;
+  }
+});
+
 export const getUserByClerkId = query({
   args: { clerkId: v.string() },
   handler: async (ctx, args) => {
@@ -43,7 +72,23 @@ export const getUserByClerkId = query({
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
       .unique();
 
-    return user;
+    if (!user) throw new Error("User not found");
+
+    const followers = await ctx.db
+      .query("follows")
+      .withIndex("by_following", (q) => q.eq("followingId", user._id))
+      .collect();
+
+    const following = await ctx.db
+      .query("follows")
+      .withIndex("by_follower", (q) => q.eq("followerId", user._id))
+      .collect();
+
+    return {
+      ...user,
+      followers: followers.length,
+      following: following.length,
+    };
   },
 });
 
