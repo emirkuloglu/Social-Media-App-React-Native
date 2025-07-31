@@ -79,7 +79,7 @@ export default function Notification({ notification }: any) {
               </TouchableOpacity>
             </Link>
           ) : (
-            <Text style={[styles.username, { opacity: 0.5 }]}>Silinmiş Kullanıcı</Text>
+            <Text style={[styles.username, { opacity: 0.5 }]}>{t("Notifications.unknownUser")}</Text>
           )}
 
           <Text style={styles.action} numberOfLines={2} ellipsizeMode="tail">

@@ -1,6 +1,9 @@
 import { ConvexError, v } from "convex/values";
+import { useTranslation } from "react-i18next";
 import { mutation, query } from "./_generated/server";
 import { getAuthenticatedUser } from "./users";
+
+const { t } = useTranslation();
 
 export const addComment = mutation({
   args: {
@@ -51,8 +54,8 @@ export const getComments = query({
         return {
           ...comment,
           user: {
-            fullname: user?.fullname || "Bilinmiyor",
-            image: user?.image || "", // ya da varsayılan avatar
+            fullname: user?.fullname || t("comment.unknownUser"),
+            image: user?.image || "",
           },
         };
       })

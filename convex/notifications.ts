@@ -1,6 +1,9 @@
 import { v } from "convex/values";
+import { useTranslation } from "react-i18next";
 import { mutation, query } from "./_generated/server";
 import { getAuthenticatedUser } from "./users";
+
+const { t } = useTranslation();
 
 export const getNotifications = query({
   handler: async (ctx) => {
@@ -37,7 +40,7 @@ export const getNotifications = query({
               }
             : {
                 _id: null,
-                username: "Silinmiş Kullanıcı",
+                username: t("notifications.unknownUser"),
                 image: null,
               },
           post,

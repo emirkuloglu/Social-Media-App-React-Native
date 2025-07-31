@@ -32,11 +32,6 @@
     "nopost": "No post yet"
   },
 
-  "notifications": {
-    "notification": "Notifications",
-    "nonotification": "No notification yet"
-  },
-
   "profile": {
     "posts": "Posts",
     "followers": "Followers",
@@ -85,9 +80,30 @@
     "likes": " likes"
   },
 
+  "SettingsModal": {
+    "logout": "Logout",
+    "deleteAccount": "Delete Account",
+    "deleteAccountConfirmation": "This action cannot be undone. Are you sure?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "settings": "Settings",
+    "selectLanguage": "Select Language"
+  },
+
+  "comment": {
+    "unknownUser": "Deleted User"
+  },
+
+  "notifications": {
+    "unknownUser": "Deleted User",
+    "notification": "Notifications",
+    "nonotification": "No notification yet"
+  },
+
   "Notification": {
     "likedyourpost": "liked your post",
     "startedfollowingyou": "started following you",
-    "commented": "commented: "
+    "commented": "commented: ",
+    "unknownUser": "Deleted User"
   }
 }

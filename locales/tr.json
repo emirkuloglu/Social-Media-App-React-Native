@@ -32,11 +32,6 @@
     "nopost": "Henüz gönderi yok"
   },
 
-  "notifications": {
-    "notification": "Bildirimler",
-    "nonotification": "Henüz bildirim yok"
-  },
-
   "profile": {
     "posts": "Gönderiler",
     "followers": "Takipçi",
@@ -84,10 +79,31 @@
     "bethefirsttolike": "İlk beğenen ol",
     "likes": " beğeni"
   },
+  
+  "SettingsModal": {
+    "logout": "Çıkış Yap",
+    "deleteAccount": "Hesabı Sil",
+    "deleteAccountConfirmation": "Bu işlem geri alınamaz. Emin misin?",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "settings": "Ayarlar",
+    "selectLanguage": "Dil Seç"
+  },
+  
+  "comment": {
+    "unknownUser": "Silinmiş Kullanıcı"
+  },
+
+  "notifications": {
+    "unknownUser": "Silinmiş Kullanıcı",
+    "notification": "Bildirimler",
+    "nonotification": "Henüz bildirim yok"
+  },
 
   "Notification": {
     "likedyourpost": "gönderini beğendi",
     "startedfollowingyou": "seni takip etmeye başladı",
-    "commented": "yorum attı: "
+    "commented": "yorum attı: ",
+    "unknownUser": "Silinmiş Kullanıcı"
   }
 }

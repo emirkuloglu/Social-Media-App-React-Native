@@ -17,7 +17,7 @@ type Props = {
 
 export default function SettingsModal({ visible, onClose, onLogout }: Props) {
     
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [showLangOptions, setShowLangOptions] = useState(false);
     const router = useRouter();
 
@@ -46,17 +46,17 @@ export default function SettingsModal({ visible, onClose, onLogout }: Props) {
         }, 300);
 
     } catch (err) {
-        console.error("Hesap silme hatası:", err);
+        console.error("Error deleting account:", err);
     }
     };
 
     const confirmDelete = () => {
     Alert.alert(
-        "Hesabı Sil",
-        "Bu işlem geri alınamaz. Emin misin Dayı?",
+        t("SettingsModal.deleteAccount"),
+        t("SettingsModal.deleteAccountConfirmation"),
         [
-        { text: "Vazgeç", style: "cancel" },
-        { text: "Sil", style: "destructive", onPress: handleDeleteAccount },
+        { text: t("SettingsModal.cancel"), style: "cancel" },
+        { text: t("SettingsModal.delete"), style: "destructive", onPress: handleDeleteAccount },
         ]
     );
     };
@@ -77,7 +77,7 @@ export default function SettingsModal({ visible, onClose, onLogout }: Props) {
             }}
           >
             <Text style={{ fontSize: 18, fontWeight: "bold", color: COLORS.white, marginBottom: 16 }}>
-              Ayarlar
+              {t("SettingsModal.settings")}
             </Text>
 
             {/* Dil Seç Butonu */}
@@ -92,7 +92,7 @@ export default function SettingsModal({ visible, onClose, onLogout }: Props) {
               >
                 <Ionicons name="language" size={22} color={COLORS.primary} />
                 <Text style={{ marginLeft: 10, fontSize: 16, color: COLORS.white }}>
-                  Dil Seç
+                  {t("SettingsModal.selectLanguage")}
                 </Text>
                 <Ionicons
                   name={showLangOptions ? "caret-up" : "caret-down"}
@@ -128,7 +128,7 @@ export default function SettingsModal({ visible, onClose, onLogout }: Props) {
                 style={{ flexDirection: "row", alignItems: "center", paddingVertical: 16 }}
                 >
                 <Ionicons name="log-out-outline" size={22} color="red" />
-                <Text style={{ marginLeft: 12, color: "red", fontSize: 16 }}>Çıkış Yap</Text>
+                <Text style={{ marginLeft: 12, color: "red", fontSize: 16 }}>{t("SettingsModal.deleteAccount")}</Text>
             </TouchableOpacity>
 
             {/* Hesap Sil Butonu */}
@@ -138,7 +138,7 @@ export default function SettingsModal({ visible, onClose, onLogout }: Props) {
                 >
                 <Ionicons name="trash-outline" size={22} color="red" />
                 <Text style={{ marginLeft: 12, color: "red", fontSize: 16 }}>
-                    Hesabımı Sil
+                    {t("SettingsModal.deleteAccount")}
                 </Text>
             </TouchableOpacity>
 
