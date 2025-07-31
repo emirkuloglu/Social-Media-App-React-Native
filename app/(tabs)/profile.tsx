@@ -1,6 +1,7 @@
 import FollowListModal from "@/components/FollowListModal";
 import { Loader } from "@/components/Loader";
 import Post from "@/components/Post";
+import SettingsModal from "@/components/SettingsModal";
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -28,6 +29,7 @@ import {
 export default function Profile() {
   const { t } = useTranslation();
   const { signOut, userId } = useAuth();
+  const [showSettings, setShowSettings] = useState(false);
 
   // Aktif kullanıcı verisi
   const currentUser = useQuery(api.users.getUserByClerkId, userId ? { clerkId: userId } : "skip");
@@ -84,14 +86,17 @@ const following = useQuery(api.follows.getFollowing, currentUser?._id ? { userId
     <View style={styles.container}>
       {/* HEADER */}
       <View style={styles.header}>
+
         <View style={styles.headerLeft}>
           <Text style={styles.username}>{currentUser.username}</Text>
         </View>
+
         <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.headerIcon} onPress={() => signOut()}>
-            <Ionicons name="log-out-outline" size={24} color={COLORS.white} />
+          <TouchableOpacity style={styles.headerIcon} onPress={() => setShowSettings(true)}>
+            <Ionicons name="settings-outline" size={24} color={COLORS.white} />
           </TouchableOpacity>
         </View>
+
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -274,6 +279,12 @@ const following = useQuery(api.follows.getFollowing, currentUser?._id ? { userId
         onClose={() => setShowFollowing(false)}
         data={following}
         title={t("profile.following")}
+      />
+
+      <SettingsModal
+        visible={showSettings}
+        onClose={() => setShowSettings(false)}
+        onLogout={signOut}
       />
 
     </View>
