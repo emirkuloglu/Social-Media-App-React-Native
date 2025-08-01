@@ -117,8 +117,8 @@ export default function UserProfileScreen() {
         <View style={styles.postsGrid}>
           {posts.length === 0 ? (
             <View style={styles.noPostsContainer}>
-              <Ionicons name="images-outline" size={48} color={COLORS.grey} />
-              <Text style={styles.noPostsText}>{t("[id].noposts")}</Text>
+              <Ionicons name="images-outline" size={48} color={COLORS.primary} />
+              <Text style={{ fontSize: 20, color: COLORS.white }}>{t("[id].noposts")}</Text>
             </View>
           ) : (
             <FlatList

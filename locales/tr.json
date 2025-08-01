@@ -40,7 +40,7 @@
     "name": "İsim",
     "bio": "Biyografi",
     "savechanges": "Değişiklikleri Kaydet",
-    "noposts": "Henüz gönderi yok"
+    "nopost": "Henüz gönderi yok"
   },
 
   "search": {

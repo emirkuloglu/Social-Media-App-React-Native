@@ -128,7 +128,7 @@ export default function SettingsModal({ visible, onClose, onLogout }: Props) {
                 style={{ flexDirection: "row", alignItems: "center", paddingVertical: 16 }}
                 >
                 <Ionicons name="log-out-outline" size={22} color="red" />
-                <Text style={{ marginLeft: 12, color: "red", fontSize: 16 }}>{t("SettingsModal.deleteAccount")}</Text>
+                <Text style={{ marginLeft: 12, color: "red", fontSize: 16 }}>{t("SettingsModal.logout")}</Text>
             </TouchableOpacity>
 
             {/* Hesap Sil Butonu */}
