@@ -69,7 +69,7 @@
 
   "FollowListModal":{
     "placeholder":"Kullanıcıları ara...",
-    "nofollowersyet": "Henüz hiç takipçin yok",
+    "nofollowersyet": "Henüz takipçin yok",
     "nofollowsyet": "Henüz takip ettiğin kimse yok"
   },
 
