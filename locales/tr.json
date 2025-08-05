@@ -5,12 +5,22 @@
     "continueWithGoogle": "Google ile devam et",
     "termsAndPrivacy": "Devam ederek Şartlar ve Gizlilik Politikamızı kabul etmiş olursunuz."
   },
-
-  "bookmarks": {
-    "bookmarks": "Kaydedilenler",
-    "nobookmarks": "Henüz kaydedilen bir gönderi yok"
+  
+  "index": {
+    "weirdo": "Weirdo",
+    "nopost": "Henüz gönderi yok"
   },
-
+  
+  "search": {
+    "search": "Arama",
+    "nosearch": "Henüz arama yok",
+    "placeholder": "Kullanıcıları ara...",
+    "resultsfor": "Sonuçlar",
+    "loading": "Yükleniyor...",
+    "noresults": "Hiç sonuç bulunamadı",
+    "recents": "Geçmiş"
+  },
+  
   "create": {
     "newpost": "Yeni Gönderi",
     "selectimage": "Bir resim seçmek için dokun",
@@ -20,16 +30,9 @@
     "permission_gallery": "Galeri izni gerekiyor!"
   },
 
-    "ImageSourceModal": {
-    "selectsource": "Resim Seç",
-    "camera": "Kamera",
-    "gallery": "Galeri",
-    "cancel": "İptal"
-  },
-
-  "index": {
-    "weirdo": "Weirdo",
-    "nopost": "Henüz gönderi yok"
+  "bookmarks": {
+    "bookmarks": "Kaydedilenler",
+    "nobookmarks": "Henüz kaydedilen bir gönderi yok"
   },
 
   "profile": {
@@ -43,14 +46,11 @@
     "nopost": "Henüz gönderi yok"
   },
 
-  "search": {
-    "search": "Arama",
-    "nosearch": "Henüz arama yok",
-    "placeholder": "Kullanıcıları ara...",
-    "resultsfor": "Sonuçlar",
-    "loading": "Yükleniyor...",
-    "noresults": "Hiç sonuç bulunamadı",
-    "recents": "Geçmiş"
+  "ImageSourceModal": {
+    "selectsource": "Resim Seç",
+    "camera": "Kamera",
+    "gallery": "Galeri",
+    "cancel": "İptal"
   },
 
   "[id]": {
