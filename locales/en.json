@@ -5,12 +5,22 @@
     "continueWithGoogle": "Continue with Google",
     "termsAndPrivacy": "By continuing, you agree to our Terms and Privacy Policy"
   },
-
-  "bookmarks": {
-    "bookmarks": "Bookmarks",
-    "nobookmarks": "No bookmarked posts yet"
+  
+  "index": {
+    "weirdo": "Weirdo",
+    "nopost": "No post yet"
   },
-
+  
+  "search": {
+    "search": "Search",
+    "nosearch": "No search yet",
+    "placeholder": "Search users...",
+    "resultsfor": "Results",
+    "loading": "Loading...",
+    "noresults": "No results found",
+    "recents": "Recents"
+  },
+  
   "create": {
     "newpost": "New Post",
     "selectimage": "Tap to select an image",
@@ -20,16 +30,9 @@
     "permission_gallery": "Gallery permission is required!"
   },
 
-  "ImageSourceModal": {
-    "selectsource": "Select Image",
-    "camera": "Camera",
-    "gallery": "Gallery",
-    "cancel": "Cancel"
-  },
-
-  "index": {
-    "weirdo": "Weirdo",
-    "nopost": "No post yet"
+  "bookmarks": {
+    "bookmarks": "Bookmarks",
+    "nobookmarks": "No bookmarked posts yet"
   },
 
   "profile": {
@@ -43,14 +46,11 @@
     "nopost": "No post yet"
   },
 
-  "search": {
-    "search": "Search",
-    "nosearch": "No search yet",
-    "placeholder": "Search users...",
-    "resultsfor": "Results",
-    "loading": "Loading...",
-    "noresults": "No results found",
-    "recents": "Recents"
+  "ImageSourceModal": {
+    "selectsource": "Select Image",
+    "camera": "Camera",
+    "gallery": "Gallery",
+    "cancel": "Cancel"
   },
 
   "[id]": {
